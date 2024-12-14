@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Inventory',
+    name: {
+      singular: 'inventory',
+      plural: 'inventories',
+    },
     createdAt: false,
     updatedAt: false,
   });

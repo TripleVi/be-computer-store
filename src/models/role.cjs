@@ -19,6 +19,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Role',
+    name: {
+      singular: 'role',
+      plural: 'roles',
+    },
     createdAt: false,
     updatedAt: false,
   });

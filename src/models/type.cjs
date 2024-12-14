@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Type',
+    name: {
+      singular: 'type',
+      plural: 'types',
+    },
   });
   return Type;
 };

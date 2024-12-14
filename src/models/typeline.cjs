@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'TypeLine',
+    name: {
+      singular: 'typeLine',
+      plural: 'typeLines',
+    },
   });
   return TypeLine;
 };
