@@ -16,13 +16,25 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
+      views: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false,
+        defaultValue: 0
+      },
+      thumbnail_id: {
+        type: Sequelize.UUID,
+        references: {
+          model: 'File',
+          key: 'id'
+        },
+        onDelete: 'RESTRICT',
+        onUpdate: 'CASCADE'
+      },
       category_id: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: {
-            tableName: 'Category'
-          },
+          model: 'Category',
           key: 'id'
         },
         onDelete: 'RESTRICT',

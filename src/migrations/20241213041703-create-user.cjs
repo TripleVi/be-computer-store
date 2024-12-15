@@ -31,9 +31,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: {
-            tableName: 'Role'
-          },
+          model: 'Role',
           key: 'id'
         },
         onDelete: 'RESTRICT',

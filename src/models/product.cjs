@@ -12,12 +12,14 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Product.belongsTo(models.Category)
+      Product.belongsTo(models.File, { as: 'thumbnail' })
       Product.hasMany(models.Type)
     }
   }
   Product.init({
     name: DataTypes.STRING,
-    description: DataTypes.STRING
+    description: DataTypes.STRING,
+    views: DataTypes.INTEGER.UNSIGNED
   }, {
     sequelize,
     modelName: 'Product',

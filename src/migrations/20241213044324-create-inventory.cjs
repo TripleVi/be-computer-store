@@ -26,9 +26,7 @@ module.exports = {
       variant1_id: {
         type: Sequelize.UUID,
         references: {
-          model: {
-            tableName: 'TypeLine'
-          },
+          model: 'TypeLine',
           key: 'id'
         },
         onDelete: 'RESTRICT',
@@ -37,9 +35,7 @@ module.exports = {
       variant2_id: {
         type: Sequelize.UUID,
         references: {
-          model: {
-            tableName: 'TypeLine'
-          },
+          model: 'TypeLine',
           key: 'id'
         },
         onDelete: 'RESTRICT',

@@ -17,9 +17,7 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: {
-            tableName: 'Product'
-          },
+          model: 'Product',
           key: 'id'
         },
         onDelete: 'RESTRICT',

@@ -17,9 +17,7 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: {
-            tableName: 'Type'
-          },
+          model: 'Type',
           key: 'id'
         },
         onDelete: 'RESTRICT',
@@ -28,9 +26,7 @@ module.exports = {
       photo_id: {
         type: Sequelize.UUID,
         references: {
-          model: {
-            tableName: 'File'
-          },
+          model: 'File',
           key: 'id'
         },
         onDelete: 'RESTRICT',
