@@ -1,9 +1,8 @@
-import { getAuth } from 'firebase-admin/auth'
 import jwt from 'jsonwebtoken'
 
-import RoleEnum from '../enums/role-enum'
-import db from '../models'
-import * as errors from '../utils/errors'
+import RoleEnum from '#src/enums/role-enum.js'
+import db from '#src/models/index.cjs'
+import * as error from '#src/core/errors.js'
 
 const verifyJWT = async (req, res, next) => {
     const authorizationHeader = req.headers.authorization
@@ -16,66 +15,36 @@ const verifyJWT = async (req, res, next) => {
             issuer: process.env.DOMAIN,
             algorithms: 'HS256',
         })
-        const { uid, roleId } = decoded
-        const user = await db.User.findOne({
+        const { id, role } = decoded
+        const user = await db.User.findByPk(id, {
             attributes: ['id'],
-            where: { id: uid, roleId },
         })
         if(!user) {
-            return res.status(401).send(errors.INVALID_CREDENTIAL)
+            return res.status(401).send(error.INVALID_CREDENTIAL)
         }
-        req.User = { uid, roleId }
+        req.User = { id, role }
         next()
-    } catch (error) {
-        switch (error.name) {
+    } catch (err) {
+        switch (err.name) {
             case 'TokenExpiredError':
-                res.status(401).send(errors.TOKEN_EXPIRED)
+                res.status(401).send(error.TOKEN_EXPIRED)
                 break
             case 'JsonWebTokenError':
             case 'NotBeforeError':
-                res.status(401).send(errors.INVALID_TOKEN)
+                res.status(401).send(error.INVALID_TOKEN)
                 break
             default:
-                console.log(error)
+                console.log(err)
                 res.sendStatus(500)
         }
     }
 }
 
-const verifyGoogleToken = async (req, res, next) => {
-    const authorizationHeader = req.headers.authorization
-    if(!authorizationHeader) {
-        return res.sendStatus(401)
-    }
-    try {
-        const token = authorizationHeader.split(' ')[1]
-        const decoded = await getAuth().verifyIdToken(token, true)
-        req.body.googleUser = decoded
-        next()
-    } catch (error) {
-        if(!error.code) {
-            console.log(error)
-            return res.sendStatus(500)
-        }
-        switch (error.code) {
-            case 'auth/id-token-expired':
-            case 'auth/id-token-revoked':
-                res.status(401).send(errors.TOKEN_EXPIRED)
-                break
-            case 'auth/user-disabled':
-                res.status(401).send(errors.INVALID_CREDENTIAL)
-                break
-            default:
-                res.status(401).send(errors.INVALID_TOKEN)
-        }
-    }
-}
-
 const isAdmin = (req, res, next) => {
-    if(RoleEnum.ADMIN === req.User.roleId) {
+    if(RoleEnum.ADMIN === req.User.role) {
         return next()
     }
-    res.status(403).send({ error: 'Access denied' })
+    res.status(403).send({ error: 'Access Denied' })
 }
 
-export { verifyJWT, verifyGoogleToken, isAdmin }
+export { verifyJWT, isAdmin }
